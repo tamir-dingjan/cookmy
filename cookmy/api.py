@@ -17,3 +17,18 @@ def search_recipes_by_ingredients(ingredients: list, number: int = 5) -> list:
         return response.json()
     else:
         return []
+
+
+def get_recipe_information_by_id(recipe_id: int) -> dict:
+    url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
+    params = {
+        "apiKey": api_key,
+        "includeNutrition": True,
+        "addWinePairing": True,
+        "addTasteData": True,
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {}

@@ -4,11 +4,45 @@ def format_recipes(recipes: list) -> str:
 
     formatted = []
     for recipe in recipes:
-        title = recipe.get("title", "No title")
-        used_count = recipe.get("usedIngredientCount", 0)
-        missed_count = recipe.get("missedIngredientCount", 0)
-        formatted.append(
-            f"Title: {title}\nUsed Ingredients: {used_count}\nMissed Ingredients: {missed_count}\n"
-        )
+        formatted.append("/" + "-" * (len(recipe.title) + 2) + "\\")
+        formatted.append(f"| {recipe.title} |")
+        formatted.append("\\" + "-" * (len(recipe.title) + 2) + "/")
+
+        if recipe.source:
+            formatted.append(f"By: {recipe.source}")
+
+        if recipe.usedIngredientCount != 0:
+            used_ingredients = ", ".join(
+                [ingredient["name"] for ingredient in recipe.usedIngredients]
+            )
+            formatted.append(
+                f"Uses your ingredients ({recipe.usedIngredientCount}): {used_ingredients}"
+            )
+
+        if recipe.missedIngredientCount != 0:
+            missed_ingredients = ", ".join(
+                [ingredient["name"] for ingredient in recipe.missedIngredients]
+            )
+            formatted.append(
+                f"Additional required ingredients ({recipe.missedIngredientCount}): {missed_ingredients}"
+            )
+
+        if recipe.timings["ready"] != 0:
+            formatted.append(f"Ready in {recipe.timings['ready']} minutes")
+        if recipe.timings["prep"] != 0:
+            formatted.append(f"Prep time: {recipe.timings['prep']} minutes")
+        if recipe.timings["cooking"] != 0:
+            formatted.append(f"Cooking time: {recipe.timings['cooking']} minutes")
+
+        formatted.append("")
+
+        if recipe.pairings["wines"] != []:
+            formatted.append(
+                f"Recommended wine pairings: {', '.join(recipe.pairings['wines'])}"
+            )
+        if recipe.pairings["text"] != "":
+            formatted.append(f"{recipe.pairings['text']}")
+
+        formatted.append("")
 
     return "\n".join(formatted)
