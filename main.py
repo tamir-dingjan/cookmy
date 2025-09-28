@@ -9,5 +9,6 @@ if __name__ == "__main__":
     recipes = convert_results_to_recipes(results)
     for recipe in recipes:
         recipe.get_full_information()
+        recipe.get_nutrition_information()
     formatted_results = format_recipes(recipes)
     print(formatted_results)

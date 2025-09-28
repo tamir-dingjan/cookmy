@@ -43,6 +43,13 @@ def format_recipes(recipes: list) -> str:
         if recipe.pairings["text"] != "":
             formatted.append(f"{recipe.pairings['text']}")
 
+        if recipe.nutrition:
+            formatted.append("Nutrition Information:")
+            formatted.append(f"  Calories: {recipe.nutrition.get('calories', 'N/A')}")
+            formatted.append(f"  Carbs: {recipe.nutrition.get('carbs', 'N/A')}")
+            formatted.append(f"  Fat: {recipe.nutrition.get('fat', 'N/A')}")
+            formatted.append(f"  Protein: {recipe.nutrition.get('protein', 'N/A')}")
+
         formatted.append("")
 
     return "\n".join(formatted)

@@ -1,4 +1,4 @@
-from cookmy.api import get_recipe_information_by_id
+from cookmy.api import get_recipe_information_by_id, get_recipe_nutrition_by_id
 
 
 class Recipe:
@@ -25,6 +25,9 @@ class Recipe:
             "wines": self.data.get("winePairing", {}).get("pairedWines", []),
             "text": self.data.get("winePairing", {}).get("pairingText", ""),
         }
+
+    def get_nutrition_information(self):
+        self.nutrition = get_recipe_nutrition_by_id(self.id)
 
 
 def convert_results_to_recipes(results: list) -> list:
