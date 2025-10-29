@@ -6,7 +6,7 @@ from cookmy.utils import format_recipes
 if __name__ == "__main__":
     args = parse_args()
     results = search_recipes_by_ingredients(args.ingredients, args.number)
-    recipes = convert_results_to_recipes(results)
+    recipes = convert_results_to_recipes(results.content)
     for recipe in recipes:
         recipe.get_full_information()
         recipe.get_nutrition_information()

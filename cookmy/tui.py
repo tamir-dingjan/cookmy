@@ -17,7 +17,6 @@ from prompt_toolkit.shortcuts import (
 from prompt_toolkit.formatted_text import ANSI, to_formatted_text, to_plain_text
 from cookmy.api import (
     search_recipes_by_ingredients,
-    get_quota_usage_from_response,
     API_ERROR,
 )
 from cookmy.models import convert_results_to_recipes
@@ -39,8 +38,8 @@ output_field = TextArea(
 # Input on the left with a top pane for entering search ingredients,
 # and a bottom pane for showing the ingredients entered so far for this search
 # Recipe results on the right
-input_window = Window(BufferControl(buffer=input_buffer), height=2, width=30)
-ingredients_window = Window(BufferControl(buffer=ingredients_buffer), width=30)
+input_window = Window(BufferControl(buffer=input_buffer), height=2, width=20)
+ingredients_window = Window(BufferControl(buffer=ingredients_buffer), width=20)
 
 input_pane = HSplit(
     [input_window, Window(height=1, char="-", style="class:line"), ingredients_window]
@@ -136,17 +135,17 @@ def _(event):
     output_field.text = f"Searching recipes for: {user_input}"
 
     try:
-        results = search_recipes_by_ingredients(user_input, number=5)
+        response = search_recipes_by_ingredients(user_input, number=5)
     except API_ERROR as e:
         output_field.text = f"API Error: {str(e)}"
         status_buffer.text = "API Error"
         return
 
     # TODO Check if we exceeded the quota and if we did show an error message
-    quota_usage = get_quota_usage_from_response(results)
+    quota_usage = response.get_quota_usage()
     status_buffer.text = f" | {quota_usage}"
 
-    recipes = convert_results_to_recipes(results)
+    recipes = convert_results_to_recipes(response.content)
     for recipe in recipes:
         recipe.get_full_information()
         recipe.get_nutrition_information()
