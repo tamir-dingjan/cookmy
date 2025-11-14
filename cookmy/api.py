@@ -26,8 +26,8 @@ load_dotenv()
 api_key = os.getenv("SPOONACULAR_API_KEY")
 
 if not api_key:
+    print("Have you configured your API key in your enrivonment?")
     raise ValueError("SPOONACULAR_API_KEY not found in environment variables.")
-
 
 def search_recipes_by_ingredients(ingredients: list, number: int = 5) -> api_response:
     url = "https://api.spoonacular.com/recipes/findByIngredients"
