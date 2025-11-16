@@ -21,7 +21,7 @@ from cookmy.api import (
 )
 from cookmy.models import convert_results_to_recipes
 from cookmy.utils import format_recipes
-from cookmy.tables import create_recipe_table
+from cookmy.tables import create_checkbox_table, create_recipe_table
 
 # Set up the input and output fields
 input_buffer = Buffer()
@@ -156,6 +156,9 @@ def _(event):
     formatted_table = to_plain_text(to_formatted_text(ANSI(recipe_table)))
 
     output_field.text = formatted_table
+
+    selection_dialog = create_checkbox_table(formatted_table)
+    selection_dialog.run()
 
 
 # Put the components into an application instance

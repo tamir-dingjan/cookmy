@@ -1,5 +1,5 @@
 # tables for displaying recipes in the TUI
-from io import StringIO
+from prompt_toolkit.shortcuts import checkboxlist_dialog
 from rich.console import Console
 from rich.table import Table
 
@@ -39,3 +39,9 @@ def create_recipe_table(recipes) -> str:
     # Return the table as a string for display in the TUI
     table_str = capture.get()
     return table_str
+
+
+def create_checkbox_table(table_str):
+    split_rows = [(f"{i}", x) for i, x in enumerate(table_str.split("\n"))]
+    result = checkboxlist_dialog(title="Select recipe(s)", values=split_rows)
+    return result
